@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    // TODO outsource some code here
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
-                R.id.add_item -> Toast.makeText(applicationContext, "Clicked Add", Toast.LENGTH_SHORT).show()
+                R.id.add_item -> startActivity(Intent(this, AddActivity::class.java))
             }
             true
         }
