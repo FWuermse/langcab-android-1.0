@@ -20,19 +20,7 @@
             android:background="@color/design_default_color_primary"/>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/content_main" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
@@ -41,8 +29,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_drawer_menu"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:fitsSystemWindows="true">
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
