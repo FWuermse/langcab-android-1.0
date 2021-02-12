@@ -40,7 +40,6 @@ class GsonRequest<T>(
         } catch (e: UnsupportedEncodingException) {
             Response.error(ParseError(e))
         } catch (e: JsonSyntaxException) {
-            println(response)
             Response.error(ParseError(e))
         }
     }

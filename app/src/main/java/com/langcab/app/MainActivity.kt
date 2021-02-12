@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
-                R.id.add_item -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_FirstFragment_to_SecondFragment)
+                R.id.add_item -> findNavController(R.id.nav_host_fragment).navigate(R.id.list_to_add)
+                R.id.list_item -> findNavController(R.id.nav_host_fragment).navigate(R.id.add_to_list)
             }
             true
         }

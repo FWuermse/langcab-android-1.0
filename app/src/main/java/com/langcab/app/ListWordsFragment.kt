@@ -29,7 +29,6 @@ class ListWordsFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser
         user?.getIdToken(true)?.addOnCompleteListener { task ->
             val idToken: String? = task.result?.token
-            println(idToken)
             idToken?.let { loadWords(idToken) }
 
         }
@@ -47,7 +46,6 @@ class ListWordsFragment : Fragment() {
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.getIdToken(true)?.addOnCompleteListener { task ->
                     val idToken: String? = task.result?.token
-                    println(idToken)
                     idToken?.let { loadWords(idToken) }
 
                 }
@@ -75,8 +73,6 @@ class ListWordsFragment : Fragment() {
         val url = "${hostName}/?search=&language=Chinese&page=0&size=10&sort=timeCreated,DESC"
         val gsonRequest = GsonRequest(url, Pageable::class.java, mutableMapOf("Authorization" to idToken),
             { response ->
-                println(response.content.size)
-                println(response)
                 renderList(response)
             },
             { error ->  println(error) })
@@ -90,6 +86,5 @@ class ListWordsFragment : Fragment() {
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = adapter
-        println("Rendered")
     }
 }

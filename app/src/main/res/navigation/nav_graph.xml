@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_list_words">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/list_to_add"
             app:destination="@id/AddWordFragment" />
     </fragment>
     <fragment
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_add_word">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/add_to_list"
             app:destination="@id/ListWordsFragment" />
     </fragment>
 </navigation>
