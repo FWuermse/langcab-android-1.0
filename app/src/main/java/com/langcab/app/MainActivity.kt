@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
@@ -32,9 +33,16 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         navView.setNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.add_item -> findNavController(R.id.nav_host_fragment).navigate(R.id.list_to_add)
-                R.id.list_item -> findNavController(R.id.nav_host_fragment).navigate(R.id.add_to_list)
+            when (it.itemId) {
+                R.id.add_item -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.list_to_add)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.list_item -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.add_to_list)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+
             }
             true
         }
@@ -48,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        toggle
         if (toggle.onOptionsItemSelected(item))
             return true
 

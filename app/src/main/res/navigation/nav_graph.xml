@@ -14,6 +14,10 @@
         <action
             android:id="@+id/list_to_add"
             app:destination="@id/AddWordFragment" />
+        <!-- Hacky workaround TODO find a better solution to avoid routing issues for pressing the current route -->
+        <action
+            android:id="@+id/add_to_list"
+            app:destination="@id/ListWordsFragment" />
     </fragment>
     <fragment
         android:id="@+id/AddWordFragment"
@@ -24,5 +28,9 @@
         <action
             android:id="@+id/add_to_list"
             app:destination="@id/ListWordsFragment" />
+        <!-- Hacky workaround TODO find a better solution to avoid routing issues for pressing the current route -->
+        <action
+            android:id="@+id/list_to_add"
+            app:destination="@id/AddWordFragment" />
     </fragment>
 </navigation>
