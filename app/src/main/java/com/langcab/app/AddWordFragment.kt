@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class AddWordFragment : Fragment() {
 
     override fun onCreateView(

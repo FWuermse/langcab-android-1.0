@@ -9,18 +9,19 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.BasicNetwork
 import com.android.volley.toolbox.DiskBasedCache
 import com.android.volley.toolbox.HurlStack
 import com.google.firebase.auth.FirebaseAuth
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class ListWordsFragment : Fragment() {
 
     lateinit var token: String
+    lateinit var currentLanguage: String
+
+    val hostName: String = "https://www.langcab.com/api"
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,7 @@ class ListWordsFragment : Fragment() {
             val idToken: String? = task.result?.token
             idToken?.let {
                 token = idToken
-                loadWords(idToken, "")
+                getCurrentLanguage(idToken)
             }
         }
 
@@ -48,7 +49,7 @@ class ListWordsFragment : Fragment() {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String):Boolean {
                 // your text view here
-                loadWords(token, newText)
+                loadWords(token, currentLanguage, newText)
                 return true
             }
             override fun onQueryTextSubmit(query: String):Boolean {
@@ -68,7 +69,7 @@ class ListWordsFragment : Fragment() {
                 user?.getIdToken(true)?.addOnCompleteListener { task ->
                     val idToken: String? = task.result?.token
                     // TODO find out if this is required
-                    idToken?.let { loadWords(idToken, "") }
+                    idToken?.let { token = idToken }
 
                 }
             } else {
@@ -80,12 +81,7 @@ class ListWordsFragment : Fragment() {
         }
     }
 
-    private fun getCurrentLanguage() {
-        // TODO implement API call to get lang
-    }
-
-    private fun loadWords(idToken: String, searchQuery: String) {
-        println("LoadWords with query: " + searchQuery)
+    private fun getCurrentLanguage(idToken: String) {
         val cache = DiskBasedCache(activity?.cacheDir, 1024 * 1024) // 1MB cap
 
         // Set up the network to use HttpURLConnection as the HTTP client.
@@ -96,9 +92,29 @@ class ListWordsFragment : Fragment() {
             start()
         }
 
-        val hostName = "https://www.langcab.com/api/word"
-        val url = "${hostName}/?search=${searchQuery}&language=Chinese&page=0&size=10&sort=timeCreated,DESC"
-        val gsonRequest = GsonRequest(url, Pageable::class.java, mutableMapOf("Authorization" to idToken),
+        val url = "${hostName}/language/last"
+        val gsonRequest = GsonRequest(url, Request.Method.GET, String::class.java, mutableMapOf("Authorization" to idToken),
+            { language ->
+                currentLanguage = language
+                loadWords(idToken, language, "")
+            },
+            { error ->  println(error) })
+        requestQueue.add(gsonRequest)
+    }
+
+    private fun loadWords(idToken: String, language: String, searchQuery: String) {
+        val cache = DiskBasedCache(activity?.cacheDir, 1024 * 1024) // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        val network = BasicNetwork(HurlStack())
+
+        // Instantiate the RequestQueue with the cache and network. Start the queue.
+        val requestQueue = RequestQueue(cache, network).apply {
+            start()
+        }
+
+        val url = "${hostName}/word/?search=${searchQuery}&language=${language}&page=0&size=10&sort=timeCreated,DESC"
+        val gsonRequest = GsonRequest(url, Request.Method.GET, Pageable::class.java, mutableMapOf("Authorization" to idToken),
             { response ->
                 renderList(response)
             },

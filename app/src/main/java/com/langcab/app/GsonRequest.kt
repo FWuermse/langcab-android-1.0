@@ -12,16 +12,18 @@ import java.nio.charset.Charset
  * Make a GET request and return a parsed object from JSON.
  *
  * @param url URL of the request to make
- * @param clazz Relevant class object, for Gson's reflection
+ * @param method REST method e.G. GET, POST, DELETE
+ * @param clazz Object class for parsing Response
  * @param headers Map of request headers
  */
 class GsonRequest<T>(
         url: String,
+        method: Int,
         private val clazz: Class<T>,
         private val headers: MutableMap<String, String>?,
         private val listener: Response.Listener<T>,
         errorListener: Response.ErrorListener
-) : Request<T>(Method.GET, url, errorListener) {
+) : Request<T>(method, url, errorListener) {
     private val gson = Gson()
 
 
