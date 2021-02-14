@@ -11,13 +11,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:theme="@style/Theme.App.AppBarOverlay">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary"/>
+            android:background="@color/design_default_color_primary_dark"
+            app:popupTheme="@style/Theme.App.PopupOverlay"/>
     </LinearLayout>
 
     <include layout="@layout/content_main" />

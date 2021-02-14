@@ -4,10 +4,9 @@ import GsonRequest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
@@ -21,20 +20,42 @@ import com.google.firebase.auth.FirebaseAuth
  */
 class ListWordsFragment : Fragment() {
 
+    lateinit var token: String
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
 
+        // Tell Fragment to retrieve Activity menu
+        setHasOptionsMenu(true)
+
         val user = FirebaseAuth.getInstance().currentUser
         user?.getIdToken(true)?.addOnCompleteListener { task ->
             val idToken: String? = task.result?.token
-            idToken?.let { loadWords(idToken) }
-
+            idToken?.let {
+                token = idToken
+                loadWords(idToken, "")
+            }
         }
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list_words, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        var searchView = menu?.findItem(R.id.app_bar_search)?.getActionView() as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String):Boolean {
+                // your text view here
+                loadWords(token, newText)
+                return true
+            }
+            override fun onQueryTextSubmit(query: String):Boolean {
+                return true
+            }
+        })
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -46,7 +67,8 @@ class ListWordsFragment : Fragment() {
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.getIdToken(true)?.addOnCompleteListener { task ->
                     val idToken: String? = task.result?.token
-                    idToken?.let { loadWords(idToken) }
+                    // TODO find out if this is required
+                    idToken?.let { loadWords(idToken, "") }
 
                 }
             } else {
@@ -58,7 +80,12 @@ class ListWordsFragment : Fragment() {
         }
     }
 
-    private fun loadWords(idToken: String) {
+    private fun getCurrentLanguage() {
+        // TODO implement API call to get lang
+    }
+
+    private fun loadWords(idToken: String, searchQuery: String) {
+        println("LoadWords with query: " + searchQuery)
         val cache = DiskBasedCache(activity?.cacheDir, 1024 * 1024) // 1MB cap
 
         // Set up the network to use HttpURLConnection as the HTTP client.
@@ -70,7 +97,7 @@ class ListWordsFragment : Fragment() {
         }
 
         val hostName = "https://www.langcab.com/api/word"
-        val url = "${hostName}/?search=&language=Chinese&page=0&size=10&sort=timeCreated,DESC"
+        val url = "${hostName}/?search=${searchQuery}&language=Chinese&page=0&size=10&sort=timeCreated,DESC"
         val gsonRequest = GsonRequest(url, Pageable::class.java, mutableMapOf("Authorization" to idToken),
             { response ->
                 renderList(response)
