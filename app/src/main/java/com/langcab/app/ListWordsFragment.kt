@@ -20,7 +20,7 @@ class ListWordsFragment : Fragment() {
     lateinit var token: String
     lateinit var currentLanguage: String
 
-    val hostName: String = "https://www.langcab.com/api"
+    private val hostName: String = "https://www.langcab.com/api"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +44,7 @@ class ListWordsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        var searchView = menu?.findItem(R.id.app_bar_search)?.getActionView() as SearchView
+        val searchView = menu.findItem(R.id.app_bar_search)?.getActionView() as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 // your text view here
@@ -112,23 +112,22 @@ class ListWordsFragment : Fragment() {
 
     private fun renderList(pageable: Pageable, searchQuery: String) {
 
-        var currentWords: ArrayList<Word> = pageable.content as ArrayList<Word>
+        val currentWords: ArrayList<Word> = pageable.content as ArrayList<Word>
         val recyclerView: RecyclerView? = view?.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
         val adapter: RecyclerView.Adapter<WordAdapter.ViewHolder> = WordAdapter((currentWords))
-        val mLayoutManager: LinearLayoutManager
 
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = adapter
-        mLayoutManager = LinearLayoutManager(activity)
-        recyclerView?.setLayoutManager(mLayoutManager)
+        val mLayoutManager = LinearLayoutManager(activity)
+        recyclerView?.layoutManager = mLayoutManager
 
-        registerInfinitScrollListener(recyclerView, mLayoutManager, pageable, searchQuery, adapter)
+        registerInfiniteScrollListener(recyclerView, mLayoutManager, pageable, searchQuery, adapter)
 
     }
 
-    private fun registerInfinitScrollListener(
+    private fun registerInfiniteScrollListener(
         recyclerView: RecyclerView?,
         mLayoutManager: LinearLayoutManager,
         pageable: Pageable,
@@ -136,7 +135,7 @@ class ListWordsFragment : Fragment() {
         adapter: RecyclerView.Adapter<WordAdapter.ViewHolder>
     ) {
         var loading = true
-        var pastVisiblesItems: Int
+        var pastVisibleItems: Int
         var visibleItemCount: Int
         var totalItemCount: Int
 
@@ -147,9 +146,9 @@ class ListWordsFragment : Fragment() {
                 if (dy > 0) { //check for scroll down
                     visibleItemCount = mLayoutManager.getChildCount()
                     totalItemCount = mLayoutManager.getItemCount()
-                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition()
+                    pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition()
                     if (loading) {
-                        if (visibleItemCount + pastVisiblesItems >= totalItemCount && !pageable.last) {
+                        if (visibleItemCount + pastVisibleItems >= totalItemCount && !pageable.last) {
                             loading = false
 
                             requestNextPage(pageable, currentPage, searchQuery, adapter)
@@ -181,9 +180,9 @@ class ListWordsFragment : Fragment() {
             Pageable::class.java,
             mutableMapOf("Authorization" to token),
             { response ->
-                response.content.forEach({
+                response.content.forEach {
                     currentWords.add(it)
-                })
+                }
                 adapter.notifyDataSetChanged()
             },
             { error -> println(error) })
