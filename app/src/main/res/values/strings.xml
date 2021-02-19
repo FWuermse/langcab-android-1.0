@@ -11,4 +11,13 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="Your_Word">Your Word</string>
+    <string name="AddANewWord">Add a new Word</string>
+    <string name="add_new_word">Add a new word</string>
+    <string name="your_word">Your word</string>
+    <string name="translation">Translation</string>
+    <string name="pronounciation">Pronounciation (optional)</string>
+    <string name="pronunciation">Pronunciation (optional)</string>
+    <string name="language">Language</string>
+    <string name="create">create</string>
 </resources>

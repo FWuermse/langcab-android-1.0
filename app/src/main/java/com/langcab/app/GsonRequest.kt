@@ -5,6 +5,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser.*
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.langcab.app.Word
+import java.io.ByteArrayInputStream
 import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
@@ -21,13 +23,22 @@ class GsonRequest<T>(
         method: Int,
         private val clazz: Class<T>,
         private val headers: MutableMap<String, String>?,
+        private val body: Word,
         private val listener: Response.Listener<T>,
         errorListener: Response.ErrorListener
 ) : Request<T>(method, url, errorListener) {
+    constructor(url: String,
+                method: Int,
+                clazz: Class<T>,
+                headers: MutableMap<String, String>?,
+                listener: Response.Listener<T>,
+                errorListener: Response.ErrorListener) : this(url, method, clazz, headers, Word(), listener, errorListener)
     private val gson = Gson()
 
 
     override fun getHeaders(): MutableMap<String, String> = headers ?: super.getHeaders()
+
+    override fun getBody(): ByteArray = gson.toJson(body).toByteArray()
 
     override fun deliverResponse(response: T) = listener.onResponse(response)
 
