@@ -44,7 +44,7 @@ class ListWordsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val searchView = menu.findItem(R.id.app_bar_search)?.getActionView() as SearchView
+        val searchView = menu.findItem(R.id.app_bar_search)?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 // your text view here
@@ -169,8 +169,8 @@ class ListWordsFragment : Fragment() {
         adapter: RecyclerView.Adapter<WordAdapter.ViewHolder>
     ) {
 
-        var currentWords: ArrayList<Word> = pageable.content as ArrayList<Word>
-        var language: String = currentWords.first().language
+        val currentWords: ArrayList<Word> = pageable.content as ArrayList<Word>
+        val language: String = currentWords.first().language
 
         val queue = Volley.newRequestQueue(activity)
         val url =
