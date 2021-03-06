@@ -35,7 +35,6 @@ class GsonRequest<T>(
                 errorListener: Response.ErrorListener) : this(url, method, clazz, headers, Word(), listener, errorListener)
     private val gson = Gson()
 
-
     override fun getHeaders(): MutableMap<String, String> = headers ?: super.getHeaders()
 
     override fun getBody(): ByteArray = gson.toJson(body).toByteArray()

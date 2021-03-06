@@ -43,7 +43,7 @@ class AddWordFragment : Fragment() {
 
         view.findViewById<Button>(R.id.button_create).setOnClickListener {
             createVocabulary(token, currentLanguage)
-            findNavController().navigate(R.id.add_to_list)
+            findNavController().navigate(R.id.to_list)
         }
     }
 

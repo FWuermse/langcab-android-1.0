@@ -8,29 +8,49 @@
     <fragment
         android:id="@+id/ListWordsFragment"
         android:name="com.langcab.app.ListWordsFragment"
-        android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_list_words">
 
         <action
-            android:id="@+id/list_to_add"
+            android:id="@+id/to_add"
             app:destination="@id/AddWordFragment" />
         <!-- Hacky workaround TODO find a better solution to avoid routing issues for pressing the current route -->
         <action
-            android:id="@+id/add_to_list"
+            android:id="@+id/to_list"
             app:destination="@id/ListWordsFragment" />
+        <action
+            android:id="@+id/to_train"
+            app:destination="@id/TrainFragment" />
     </fragment>
     <fragment
         android:id="@+id/AddWordFragment"
         android:name="com.langcab.app.AddWordFragment"
-        android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_add_word">
 
         <action
-            android:id="@+id/add_to_list"
+            android:id="@+id/to_list"
             app:destination="@id/ListWordsFragment" />
         <!-- Hacky workaround TODO find a better solution to avoid routing issues for pressing the current route -->
         <action
-            android:id="@+id/list_to_add"
+            android:id="@+id/to_add"
             app:destination="@id/AddWordFragment" />
+        <action
+            android:id="@+id/to_train"
+            app:destination="@id/TrainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/TrainFragment"
+        android:name="com.langcab.app.TrainFragment"
+        tools:layout="@layout/fragment_train">
+
+        <action
+            android:id="@+id/to_list"
+            app:destination="@id/ListWordsFragment" />
+        <!-- Hacky workaround TODO find a better solution to avoid routing issues for pressing the current route -->
+        <action
+            android:id="@+id/to_add"
+            app:destination="@id/AddWordFragment" />
+        <action
+            android:id="@+id/to_train"
+            app:destination="@id/TrainFragment" />
     </fragment>
 </navigation>

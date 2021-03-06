@@ -59,28 +59,6 @@ class ListWordsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                user?.getIdToken(true)?.addOnCompleteListener { task ->
-                    val idToken: String? = task.result?.token
-                    // TODO find out if this is required
-                    idToken?.let { token = idToken }
-
-                }
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }
-
     private fun getCurrentLanguage(idToken: String) {
         val queue = Volley.newRequestQueue(activity)
         val url = "${hostName}/language/last"
@@ -124,7 +102,6 @@ class ListWordsFragment : Fragment() {
         recyclerView?.layoutManager = mLayoutManager
 
         registerInfiniteScrollListener(recyclerView, mLayoutManager, pageable, searchQuery, adapter)
-
     }
 
     private fun registerInfiniteScrollListener(

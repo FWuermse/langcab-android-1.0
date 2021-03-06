@@ -46,14 +46,17 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.add_item -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.list_to_add)
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.to_add)
                     drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 R.id.list_item -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.add_to_list)
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.to_list)
                     drawerLayout.closeDrawer(GravityCompat.START)
                 }
-
+                R.id.train_item -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.to_train)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
             }
             true
         }
